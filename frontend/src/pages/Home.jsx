@@ -36,14 +36,17 @@ const Home = () => {
     }
 
     const handleSearchChange = (e)=>{
-        clearTimeout(searchTimeOut);
         setSearchText(e.target.value);
-        setSearchTimeOut(
-            setTimeout(()=>{
-                const searchResults = allPosts.filter((item)=> item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()) )
-                setSearchedPosts(searchResults);
-            }, 500)
-        )
+        
+        clearTimeout(searchTimeOut);
+        const timerId = setTimeout(()=>{
+            const searchResults = allPosts.filter((item)=> 
+                    item.name.toLowerCase().includes(searchText.toLowerCase()) || 
+                    item.prompt.toLowerCase().includes(searchText.toLowerCase()) 
+                )
+            setSearchedPosts(searchResults);
+        }, 600)
+        setSearchTimeOut(timerId)
     }
 
     useEffect(()=>{
