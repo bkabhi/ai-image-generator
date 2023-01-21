@@ -16,6 +16,8 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [searchedPosts, setSearchedPosts] = useState([]);
+    const [searchTimeOut, setSearchTimeOut] = useState(null);
 
     const fetchPosts = async()=>{
         try {
@@ -33,6 +35,17 @@ const Home = () => {
         }
     }
 
+    const handleSearchChange = (e)=>{
+        clearTimeout(searchTimeOut);
+        setSearchText(e.target.value);
+        setSearchTimeOut(
+            setTimeout(()=>{
+                const searchResults = allPosts.filter((item)=> item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()) )
+                setSearchedPosts(searchResults);
+            }, 500)
+        )
+    }
+
     useEffect(()=>{
         fetchPosts()
     }, [])
@@ -46,7 +59,14 @@ const Home = () => {
                 </p>
             </div>
             <div className='mt-16'>
-                <FormField />
+                <FormField
+                    labelName='Search posts'
+                    type='text'
+                    name={'text'}
+                    placeholder='Search posts'
+                    value={searchText}
+                    handleChange = {handleSearchChange}
+                />
             </div>
             <div className='mt-10'>
                 {isLoading ? (
@@ -63,7 +83,7 @@ const Home = () => {
                         <div className='grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3'>
                             {searchText ? (
                                 <RenderCard
-                                    data={[]}
+                                    data={searchedPosts}
                                     title='No Search Results Found'
                                 />
                             ) : (
