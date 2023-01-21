@@ -16,7 +16,6 @@ dalleRoutes.get('/', (req, res) => {
     res.send("Hello from dalle")
 })
 
-
 dalleRoutes.post('/', async (req, res) => {
     try {
         const { prompt } = req.body;
@@ -27,10 +26,10 @@ dalleRoutes.post('/', async (req, res) => {
             size: '1024x1024',
             response_format: 'b64_json',
         });
-        
+
         const image = aiResponse.data.data[0].b64_json;
-        res.status(200).json({ photo: image });
+        res.status(200).json({ success: true, photo: image });
     } catch (error) {
-        res.status(500).send({ error: error.message, message: "error" })
+        res.status(500).send({ success: false, error: error.message, message: "error" })
     }
 })

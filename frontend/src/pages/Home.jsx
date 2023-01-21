@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Loader, Card, FormField } from '../components';
 
+const apiUrl = 'http://localhost:8080' || process.env.REACT_APP_API_URL;
+
 const RenderCard = ({ data, title }) => {
     if (data.length > 0) {
         return data.map((post => <Card key={post._id} {...post} />))
@@ -13,7 +15,27 @@ const RenderCard = ({ data, title }) => {
 const Home = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [allPosts, setAllPosts] = useState(null);
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('');
+
+    const fetchPosts = async()=>{
+        try {
+            setIsLoading(true);
+            const res = await fetch(apiUrl+"/api/v1/post");
+            const posts = await res.json();
+
+            if(res.ok){
+                setAllPosts(posts.data.reverse());
+            }
+        } catch (error) {
+            alert(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(()=>{
+        fetchPosts()
+    }, [])
 
     return (
         <section className='max-w-7xl mx-auto'>
@@ -46,7 +68,7 @@ const Home = () => {
                                 />
                             ) : (
                                 <RenderCard
-                                    data={[]}
+                                    data={allPosts}
                                     title='No Posts Found'
                                 />
                             )
