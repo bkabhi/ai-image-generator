@@ -6,7 +6,8 @@ import { getRandomPrompt } from '../utils'
 import { FormField, Loader } from '../components';
 
 
-const apiUrl = 'http://localhost:8080' || process.env.REACT_APP_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
+// console.log(apiUrl);
 
 let initFormData = { name:'', prompt:'', photo:'' }
 
@@ -20,7 +21,7 @@ const CreatePost = () => {
         if(form.prompt){
             try {
                 setgeneratingImg(true);
-                const res = await fetch(`${apiUrl}/api/v1/dalle`, {
+                const res = await fetch(`${apiUrl}/api/v1/openai`, {
                     method: 'POST',
                     body: JSON.stringify({ prompt: form.prompt }),
                     headers: {

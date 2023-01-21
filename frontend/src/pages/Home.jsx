@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Loader, Card, FormField } from '../components';
 
-const apiUrl = 'http://localhost:8080' || process.env.REACT_APP_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const RenderCard = ({ data, title }) => {
     if (data.length > 0) {
@@ -37,7 +37,7 @@ const Home = () => {
 
     const handleSearchChange = (e)=>{
         setSearchText(e.target.value);
-        
+
         clearTimeout(searchTimeOut);
         const timerId = setTimeout(()=>{
             const searchResults = allPosts.filter((item)=> 

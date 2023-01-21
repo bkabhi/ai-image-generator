@@ -1,10 +1,7 @@
-import { Router } from "express";
 import dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
 
 dotenv.config();
-
-export const dalleRoutes = Router();
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
@@ -12,11 +9,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-dalleRoutes.get('/', (req, res) => {
-    res.send("Hello from dalle")
-})
-
-dalleRoutes.post('/', async (req, res) => {
+export const createAiImage = async (req, res) => {
     try {
         const { prompt } = req.body;
 
@@ -32,4 +25,4 @@ dalleRoutes.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).send({ success: false, error: error.message, message: "error" })
     }
-})
+}
