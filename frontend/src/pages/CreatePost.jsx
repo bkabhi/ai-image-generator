@@ -5,17 +5,39 @@ import { preview } from '../assets';
 import { getRandomPrompt } from '../utils'
 import { FormField, Loader } from '../components';
 
+
+const apiUrl = 'http://localhost:8080' || process.env.REACT_APP_API_URL;
+
+let initFormData = { name:'', prompt:'', photo:'' }
+
 const CreatePost = () => {
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        name:'',
-        prompt:'',
-        photo:''
-    })
+    const [form, setForm] = useState(initFormData)
     const [generatingImg, setgeneratingImg] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
-    const generateImage = () => {}
+    const generateImage = async() => {
+        if(form.prompt){
+            try {
+                setgeneratingImg(true);
+                const res = await fetch(`${apiUrl}/api/v1/dalle`, {
+                    method: 'POST',
+                    body: JSON.stringify({ prompt: form.prompt }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await res.json();
+                setForm({...form, photo: `data:image/jpeg;base64,${data.photo}`});
+            } catch (error) {
+                alert(error)
+            } finally{
+                setgeneratingImg(false);
+            }
+        }else{
+            alert('Please enter a prompt')
+        }
+    }
 
     const handleSubmit = () => {
 
