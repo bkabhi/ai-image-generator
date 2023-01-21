@@ -1,16 +1,5 @@
-import dotenv from 'dotenv';
-import { v2 as cloudinary } from 'cloudinary';
-
 import PostModel from '../models/post.model.js'
-
-dotenv.config();
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-})
-
+import { getPhotoUrl } from '../utils/index.js';
 
 // get all posts
 export const getAllPosts = async(req, res)=>{
@@ -27,7 +16,7 @@ export const getAllPosts = async(req, res)=>{
 export const createPost = async(req, res)=>{
     const { name, prompt, photo } = req.body;
     try {
-        const photoUrl = await cloudinary.uploader.upload(photo);
+        const photoUrl = await getPhotoUrl(photo);
         const newPost = await PostModel.create({name, prompt, photo: photoUrl.url});
 
         res.status(200).send({ success: true, data: newPost });
