@@ -5,11 +5,9 @@ import { preview } from '../assets';
 import { getRandomPrompt } from '../utils'
 import { FormField, Loader } from '../components';
 
-
 const apiUrl = import.meta.env.VITE_API_URL;
-// console.log(apiUrl);
 
-let initFormData = { name:'', prompt:'', photo:'' }
+let initFormData = { name: '', prompt: '', photo: '' }
 
 const CreatePost = () => {
     const navigate = useNavigate();
@@ -17,8 +15,8 @@ const CreatePost = () => {
     const [generatingImg, setgeneratingImg] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
-    const generateImage = async() => {
-        if(form.prompt){
+    const generateImage = async () => {
+        if (form.prompt) {
             try {
                 setgeneratingImg(true);
                 const res = await fetch(`${apiUrl}/api/v1/openai`, {
@@ -29,23 +27,23 @@ const CreatePost = () => {
                     }
                 });
                 const data = await res.json();
-                setForm({...form, photo: `data:image/jpeg;base64,${data.photo}`});
+                setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
             } catch (error) {
                 alert(error)
-            } finally{
+            } finally {
                 setgeneratingImg(false);
             }
-        }else{
+        } else {
             alert('Please enter a prompt')
         }
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if(form.prompt && form.photo){
+        if (form.prompt && form.photo) {
             try {
                 setLoading(true);
-                const res = await fetch(apiUrl+"/api/v1/post",{
+                const res = await fetch(apiUrl + "/api/v1/post", {
                     method: 'POST',
                     body: JSON.stringify(form),
                     headers: {
@@ -59,18 +57,18 @@ const CreatePost = () => {
             } finally {
                 setLoading(false);
             }
-        }else{
+        } else {
             alert('Please enter prompt and generate an image');
         }
     }
 
     const handleChange = (e) => {
-        setForm({...form, [e.target.name]:e.target.value})
+        setForm({ ...form, [e.target.name]: e.target.value });
     }
 
     const handleSurprise = () => {
-        const randomPrompt = getRandomPrompt(form.prompt)
-        setForm({...form, prompt:randomPrompt})
+        const randomPrompt = getRandomPrompt(form.prompt);
+        setForm({ ...form, prompt: randomPrompt });
     }
 
     return (
@@ -88,7 +86,7 @@ const CreatePost = () => {
                         type='text'
                         name='name'
                         placeholder='John Doe'
-                        handleChange = {handleChange}
+                        handleChange={handleChange}
                     />
                     <FormField
                         labelName='prompt'
@@ -96,7 +94,7 @@ const CreatePost = () => {
                         name='prompt'
                         placeholder='The long-lost Star Wars 1990 Japanese Anime'
                         value={form.prompt}
-                        handleChange = {handleChange}
+                        handleChange={handleChange}
                         isSurpriseMe
                         handleSurprise={handleSurprise}
                     />
@@ -105,35 +103,35 @@ const CreatePost = () => {
                         border-gray-300 text-gray-900 text-sm rounded-lg
                         focus:ring-blue-500 focus:border-blue-500 w-64 p-3
                         h-64 flex justify-center items-center'
-                        >
-                            {form.photo?(
-                                <img src={form.photo} alt={form.prompt} className='w-full h-full object-contain'/>
-                            ) : (
-                                <img src={preview} alt='preview' className='w-9/12 h-9/12 object-contain opacity-40'/>
-                            )}
-                            {generatingImg && (
-                                <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
-                                    <Loader />
-                                </div>
-                            )}
+                    >
+                        {form.photo ? (
+                            <img src={form.photo} alt={form.prompt} className='w-full h-full object-contain' />
+                        ) : (
+                            <img src={preview} alt='preview' className='w-9/12 h-9/12 object-contain opacity-40' />
+                        )}
+                        {generatingImg && (
+                            <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
+                                <Loader />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className='mt-5 flex gap-5'>
-                    <button 
+                    <button
                         type='button'
-                        onClick = {generateImage}
+                        onClick={generateImage}
                         className='text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center'>
-                            {generatingImg ?"Generating...": "Generate"}
+                        {generatingImg ? "Generating..." : "Generate"}
                     </button>
                 </div>
                 <div className='mt-10'>
                     <p className='mt-2 text-[#666e75] text-[14px]'>
                         ** Once you have created the image you want, you can share it with others in the community **
                     </p>
-                    <button 
+                    <button
                         type='submit'
                         className='mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center'>
-                            {isLoading ?"Sharing...": "Share With the community"}
+                        {isLoading ? "Sharing..." : "Share With the community"}
                     </button>
                 </div>
             </form>
