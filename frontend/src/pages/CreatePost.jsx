@@ -21,7 +21,7 @@ const CreatePost = () => {
                 setgeneratingImg(true);
                 const res = await fetch(`${apiUrl}/api/v1/openai`, {
                     method: 'POST',
-                    body: JSON.stringify({ prompt: form.prompt }),
+                    body: JSON.stringify({ prompt: form.prompt, name: form.name }),
                     headers: {
                         'Content-Type': 'application/json'
                     }

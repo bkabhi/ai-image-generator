@@ -3,7 +3,8 @@ import { getAiImageFromOpenAi } from '../utils/index.js';
 // Create Ai Image 
 export const createAiImage = async (req, res) => {
     try {
-        const { prompt } = req.body;
+        const { prompt, name } = req.body;
+        // console.log(req.body, " body ");
 
         const image = await getAiImageFromOpenAi(prompt);
 
