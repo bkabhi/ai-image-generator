@@ -1,4 +1,4 @@
-# [AI Image Generator](https://ai-image-generator-mern.netlify.app)
+# [AI Image Generator](https://ai-image-generator-mern-bkabhi.netlify.app/)
 
 ## Description
 
