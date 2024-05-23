@@ -30,7 +30,7 @@ AI Image Generator Full Stack MERN App, where user can generate ai image by writ
 
 ## Link
 
-https://ai-image-generator-mern.netlify.app
+https://ai-image-generator-mern-bkabhi.netlify.app/
 
 ## How to run locally ?
 
